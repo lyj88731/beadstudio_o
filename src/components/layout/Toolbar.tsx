@@ -65,18 +65,18 @@ function Toolbar() {
         </button>
 
 
-<button
- id="undo"
- className="history-button"
->
+        <button
+          id="undo"
+          className="history-button"
+        >
           ↶
         </button>
 
 
-<button
- id="redo"
- className="history-button"
->
+        <button
+          id="redo"
+          className="history-button"
+        >
           ↷
         </button>
 
@@ -86,217 +86,213 @@ function Toolbar() {
 
 
 
-
-      {/* IMAGE PANEL */}
-
-
-      <section className="tool-panel">
-
-
-        <h3>
-          IMAGE
-        </h3>
+      <div className="toolbar-scroll">
 
 
 
-        <div className="size-row">
+        {/* IMAGE PANEL */}
 
-          <label>
-            Width
-          </label>
+        <section className="tool-panel">
+
+
+          <h3>
+            IMAGE
+          </h3>
+
+
+
+          <div className="size-row">
+
+            <label>
+              Width
+            </label>
+
+
+            <input
+              id="pattern-width"
+              type="number"
+              min="1"
+              max="500"
+              defaultValue="50"
+            />
+
+          </div>
+
 
 
           <input
-            id="pattern-width"
-            type="number"
+            id="pattern-width-slider"
+            className="slider"
+            type="range"
             min="1"
             max="500"
             defaultValue="50"
           />
 
-        </div>
 
 
 
-        <input
-          id="pattern-width-slider"
-          className="slider"
-          type="range"
-          min="1"
-          max="500"
-          defaultValue="50"
-        />
+          <div className="size-row">
+
+            <label>
+              Height
+            </label>
 
 
+            <input
+              id="pattern-height"
+              type="number"
+              min="1"
+              max="500"
+              defaultValue="50"
+            />
 
+          </div>
 
-        <div className="size-row">
-
-          <label>
-            Height
-          </label>
 
 
           <input
-            id="pattern-height"
-            type="number"
+            id="pattern-height-slider"
+            className="slider"
+            type="range"
             min="1"
             max="500"
             defaultValue="50"
           />
 
-        </div>
 
 
 
-        <input
-          id="pattern-height-slider"
-          className="slider"
-          type="range"
-          min="1"
-          max="500"
-          defaultValue="50"
-        />
+          <div className="option-box">
 
 
+            <label className="check-row">
 
+              <input
+                id="lock-ratio"
+                type="checkbox"
+                defaultChecked
+              />
 
+              <span>
+                Lock Ratio
+              </span>
 
+            </label>
 
-        <div className="option-box">
 
 
-          <label className="check-row">
+            <label className="check-row">
 
-            <input
-              id="lock-ratio"
-              type="checkbox"
-              defaultChecked
-            />
+              <input
+                id="grid-5"
+                type="checkbox"
+                defaultChecked
+              />
 
-            <span>
-              Lock Ratio
-            </span>
+              <span>
+                Grid 5
+              </span>
 
-          </label>
+            </label>
 
 
 
 
-          <label className="check-row">
+            <label className="check-row">
 
-            <input
-              id="grid-5"
-              type="checkbox"
-              defaultChecked
-            />
+              <input
+                id="grid-10"
+                type="checkbox"
+                defaultChecked
+              />
 
-            <span>
-              Grid 5
-            </span>
+              <span>
+                Grid 10
+              </span>
 
-          </label>
+            </label>
 
 
 
+            <label className="check-row">
 
+              <input
+                id="show-color-name"
+                type="checkbox"
+              />
 
-          <label className="check-row">
+              <span>
+                Color Name
+              </span>
 
-            <input
-              id="grid-10"
-              type="checkbox"
-              defaultChecked
-            />
+            </label>
 
-            <span>
-              Grid 10
-            </span>
 
-          </label>
+          </div>
 
-<label className="check-row">
 
-  <input
-    id="show-color-name"
-    type="checkbox"
-  />
+        </section>
 
-  <span>
-    Color Name
-  </span>
 
-</label>
 
 
 
+        {/* COLOR PANEL */}
 
-        </div>
 
+        <section className="tool-panel">
 
 
-      </section>
+          <h3>
+            COLORS
+          </h3>
 
 
 
+          <input
+            id="color-count"
+            className="slider"
+            type="range"
+            min="1"
+            max="221"
+            defaultValue="50"
+          />
 
 
 
-      {/* COLOR PANEL */}
+          <div
+            id="color-count-value"
+            className="slider-value"
+          >
+            50
+          </div>
 
 
 
-      <section className="tool-panel">
 
+          <button
+            id="convert-image"
+            className="convert-button"
+          >
+            Convert
+          </button>
 
-        <h3>
-          COLORS
-        </h3>
 
 
+          <button
+            id="export-jpg"
+            className="convert-button"
+          >
+            Export JPG
+          </button>
 
-        <input
-          id="color-count"
-          className="slider"
-          type="range"
-          min="1"
-          max="221"
-          defaultValue="50"
-        />
 
 
-        <div
-          id="color-count-value"
-          className="slider-value"
-        >
-          50
-        </div>
+        </section>
 
 
-
-
-
-        <button
-          id="convert-image"
-          className="convert-button"
-        >
-          Convert
-        </button>
-
-
-<button
-  id="export-jpg"
-  className="convert-button"
->
-  Export JPG
-</button>
-
-
-
-
-      </section>
-
-
+      </div>
 
 
     </aside>
