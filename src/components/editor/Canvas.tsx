@@ -142,15 +142,39 @@ function Canvas(){
         new BeadLayer();
 
 
-
 let grid =
   createGrid(
-    0,
-    0,
+    100,
+    100,
     20,
     true,
     true
   );
+
+
+
+
+const gridCheck =
+document.getElementById(
+  "show-grid"
+);
+
+
+if(gridCheck){
+
+  gridCheck.onchange =
+()=>{
+
+  grid.visible =
+    (gridCheck as HTMLInputElement)
+    .checked;
+
+
+  update();
+
+};
+
+}
 
 const grid5 =
   document.getElementById(
@@ -162,6 +186,10 @@ const grid10 =
   document.getElementById(
     "grid-10"
   ) as HTMLInputElement;
+
+
+
+
 
 
 const showColorName =
@@ -200,6 +228,12 @@ const updateGrid =
   );
 
 
+  grid.destroy({
+  children:true
+});
+
+
+
   grid =
     createGrid(
       beads.getSize().width,
@@ -208,6 +242,33 @@ const updateGrid =
       grid5.checked,
       grid10.checked
     );
+
+
+  const gridCheck =
+    document.getElementById(
+      "show-grid"
+    ) as HTMLInputElement;
+
+
+
+  if(gridCheck){
+
+    // 5/10 켜면 기본 Grid도 체크
+    if(
+      grid5.checked ||
+      grid10.checked
+    ){
+
+      gridCheck.checked = true;
+
+    }
+
+
+    grid.visible =
+      gridCheck.checked;
+
+  }
+
 
 
   world.addChild(
@@ -245,6 +306,10 @@ if(grid10){
 
 
 
+
+
+
+
       const dim =
         new DimLayer();
 
@@ -258,7 +323,7 @@ if(grid10){
       const hover =
         new HoverLayer();
 
-
+let showHighlight = true;
 
 
       // =====================
@@ -290,6 +355,9 @@ if(grid10){
         dim.container
       );
 
+
+
+      
 
       world.addChild(
         highlight.container
@@ -791,6 +859,10 @@ const updateToolUI =
     currentTool =
       tool;
 
+        console.log(
+    "현재 툴:",
+    currentTool
+  );
 
     updateToolUI(
       tool
@@ -846,203 +918,266 @@ const updateToolUI =
       // Input
       // =====================
 
+new Input(
+  app.canvas,
+  camera,
+  update,
+  (x,y)=>{
 
-      new Input(
-        app.canvas,
-        camera,
-        update,
-        (x,y)=>{
 
+    // =====================
+    // 지우개
+    // =====================
 
-          // =====================
-          // 지우개
-          // =====================
+    if(
+      currentTool === "eraser"
+    ){
 
+      const before =
+        beads.getColor(
+          x,
+          y
+        );
 
-          if(
-            currentTool === "eraser"
-          ){
 
+      if(
+        before !== -1
+      ){
 
-            const before =
-              beads.getColor(
-                x,
-                y
-              );
+        beads.remove(
+          x,
+          y
+        );
 
 
+        history.push([
 
-            if(
-              before !== 0xffffff
-            ){
-
-
-              beads.remove(
-                x,
-                y
-              );
-
-
-
-              history.push([
-
-                {
-                  x,
-                  y,
-                  before,
-                  after:0xffffff,
-                }
-
-              ]);
-
-
-
-              updateColorList();
-
-
-            }
-
-
-
-            return;
-
-
-          }
-
-
-
-
-
-          // =====================
-          // 스포이드
-          // =====================
-
-
-          if(
-            currentTool === "picker"
-          ){
-
-
-            selectedColor =
-              beads.getColor(
-                x,
-                y
-              );
-
-
-
-            clearHighlight();
-
-
-
-            const selected =
-              document.getElementById(
-                "selected-color"
-              );
-
-
-
-            if(selected){
-
-              selected.textContent =
-                "#" +
-                selectedColor
-                  .toString(16)
-                  .padStart(6,"0");
-
-            }
-
-
-
-            return;
-
-
-          }
-
-
-
-
-
-          // =====================
-          // 펜
-          // =====================
-
-
-          if(
-            currentTool !== "pen" ||
-            selectedColor === null
-          )
-            return;
-
-
-
-          const before =
-            beads.getColor(
-              x,
-              y
-            );
-
-
-
-          if(
-            before === selectedColor
-          )
-            return;
-
-
-
-          beads.set(
+          {
             x,
             y,
-            selectedColor
-          );
+            before,
+            after:0xffffff,
+          }
+
+        ]);
+
+
+        updateColorList();
+
+      }
+
+
+      return;
+
+    }
 
 
 
-          history.push([
+// =====================
+// 스포이드
+// =====================
 
-            {
+if(
+  currentTool === "picker"
+){
 
-              x,
-
-              y,
-
-              before,
-
-              after:selectedColor,
-
-            }
-
-          ]);
+  const color =
+    beads.getColor(
+      x,
+      y
+    );
 
 
-
-          clearTimeout(
-            paintTimer
-          );
+  // 빈 공간이면 무시
+  if(color === -1)
+    return;
 
 
 
-          paintTimer =
-            window.setTimeout(
-              ()=>{
-
-                updateColorList();
-
-              },
-              200
-            );
+  // 선택 색 저장
+  selectedColor =
+    color;
 
 
-        }
-      ,beads.getSize().width,
-  beads.getSize().height
 
-  ,
-()=>currentTool
+  clearHighlight();
+
+
+
+  const hex =
+    "#" +
+    selectedColor
+      .toString(16)
+      .padStart(6,"0");
+
+
+
+  const mard =
+    MardColors.find(
+      c =>
+      c.color === selectedColor
+    );
+
+
+
+  const colorName =
+    mard
+    ? mard.name
+    : hex;
+
+
+
+
+  // =====================
+  // 왼쪽 툴바
+  // =====================
+
+
+  const leftPreview =
+    document.getElementById(
+      "selected-color-preview"
+    );
+
+
+  if(leftPreview){
+
+    leftPreview.style.background =
+      hex;
+
+  }
+
+
+
+  const leftName =
+    document.getElementById(
+      "selected-color-name"
+    );
+
+
+  if(leftName){
+
+    leftName.textContent =
+      colorName;
+
+  }
+
+
+
+
+  // =====================
+  // 오른쪽 Color Replace
+  // =====================
+
+
+  const replacePreview =
+    document.getElementById(
+      "replace-color-preview"
+    );
+
+
+  if(replacePreview){
+
+    replacePreview.style.background =
+      hex;
+
+  }
+
+
+
+  const replaceName =
+    document.getElementById(
+      "selected-color"
+    );
+
+
+  if(replaceName){
+
+    replaceName.textContent =
+      colorName;
+
+  }
+
+
+
+  return;
+
+}
+
+
+
+    // =====================
+    // 펜
+    // =====================
+
+    console.log(
+      "그리기 상태",
+      currentTool,
+      selectedColor
+    );
+
+
+    if(
+      currentTool !== "pen" ||
+      selectedColor === null
+    )
+      return;
+
+
+
+    const before =
+      beads.getColor(
+        x,
+        y
       );
 
 
+    if(
+      before === selectedColor
+    )
+      return;
+
+
+
+    beads.set(
+      x,
+      y,
+      selectedColor
+    );
+
+
+    history.push([
+
+      {
+        x,
+        y,
+        before,
+        after:selectedColor,
+      }
+
+    ]);
+
+
+    clearTimeout(
+      paintTimer
+    );
+
+
+    paintTimer =
+      window.setTimeout(
+        ()=>{
+
+          updateColorList();
+
+        },
+        200
+      );
+
+
+  },
+  1000,
+  1000,
+  ()=>currentTool
+);
 
 
 
@@ -1095,7 +1230,7 @@ const updateToolUI =
 
 const undoButton =
   document.getElementById(
-    "undo-button"
+    "undo"
   );
 
 
@@ -1110,11 +1245,73 @@ if(undoButton){
 
 }
 
+const highlightCheck =
+  document.getElementById(
+    "show-highlight"
+  );
 
+
+if(highlightCheck){
+
+  highlightCheck.onchange =
+  ()=>{
+
+
+    showHighlight =
+      (highlightCheck as HTMLInputElement)
+      .checked;
+
+
+
+    highlight.enabled =
+      showHighlight;
+
+
+
+dim.enabled =
+  showHighlight;
+
+
+if(!showHighlight){
+
+  dim.clear();
+
+}
+
+
+
+    if(!showHighlight){
+
+      highlight.clear();
+
+      dim.clear();
+
+    }
+    else{
+
+      if(selectedColor !== null){
+
+        highlight.showOutline(
+          selectedColor,
+          beads.getCells()
+        );
+
+      }
+
+    }
+
+
+
+    update();
+
+
+  };
+
+}
 
 const redoButton =
   document.getElementById(
-    "redo-button"
+    "redo"
   );
 
 
@@ -1231,6 +1428,9 @@ if(e.key === "Escape"){
 
         }
       );
+
+
+      
             // =====================
       // Preview Convert
       // =====================
@@ -1311,59 +1511,108 @@ const pixels =
           );
 
 
+// =====================
+// 색상 매칭 캐시
+// =====================
 
-        for(
-          const pixel
-          of pixels
-        ){
-
-
-          let best =
-            palette[0];
-
-
-          let min =
-            Infinity;
+const colorCache =
+  new Map<number, number>();
 
 
 
-          for(
-            const c
-            of palette
-          ){
+// =====================
+// 픽셀 변환
+// =====================
+
+for(
+  const pixel
+  of pixels
+){
 
 
-            const distance =
-              colorDistance(
-                pixel.color,
-                c.color
-              );
-
-
-
-            if(distance < min){
-
-              min =
-                distance;
-
-
-              best =
-                c;
-
-            }
-
-          }
+  let bestColor =
+    colorCache.get(
+      pixel.color
+    );
 
 
 
-          beads.set(
-            pixel.x,
-            pixel.y,
-            best.color
-          );
+  // 처음 보는 색만 계산
+
+  if(
+    bestColor === undefined
+  ){
 
 
-        }
+    let best =
+      palette[0];
+
+
+    let min =
+      Infinity;
+
+
+
+    for(
+      const c
+      of palette
+    ){
+
+
+      const distance =
+        colorDistance(
+          pixel.color,
+          c.color
+        );
+
+
+
+      if(
+        distance < min
+      ){
+
+        min =
+          distance;
+
+
+        best =
+          c;
+
+      }
+
+
+    }
+
+
+
+    bestColor =
+      best.color;
+
+
+
+    colorCache.set(
+      pixel.color,
+      bestColor
+    );
+
+
+  }
+
+
+
+  beads.set(
+    pixel.x,
+    pixel.y,
+    bestColor,
+ false
+  );
+
+beads.refresh();
+  updateColorList();
+
+  update();
+
+}
 
 
 
@@ -1383,6 +1632,9 @@ const pixels =
           grid
         );
 
+  grid.destroy({
+  children:true
+});
 
 
 grid =
@@ -1390,8 +1642,8 @@ grid =
     beads.getSize().width,
     beads.getSize().height,
     20,
-    true,
-    true
+grid5.checked,
+grid10.checked
   );
 
 
@@ -1797,7 +2049,7 @@ const lockRatio =
 if(widthSlider){
 
 
-  widthSlider.oninput =
+  widthSlider.onchange =
   ()=>{
 
 
@@ -1846,7 +2098,7 @@ if(widthSlider){
 if(heightSlider){
 
 
-  heightSlider.oninput =
+  heightSlider.onchange =
   ()=>{
 
 
@@ -2255,122 +2507,155 @@ box.style.backgroundColor =
 
 
 
+// =====================
+// Replace 실행
+// =====================
 
-      // =====================
-      // Replace 실행
-      // =====================
+
+const replaceButton =
+  document.getElementById(
+    "replace-button"
+  );
 
 
-      const replaceButton =
-        document.getElementById(
-          "replace-button"
+
+if(replaceButton){
+
+
+  replaceButton.onclick =
+  ()=>{
+
+
+    if(
+      selectedCells.length === 0
+    )
+      return;
+
+
+
+    const newColor =
+      Number(
+        replaceSelect.value
+      );
+
+
+
+    const actions:
+      HistoryAction[] =
+      [];
+
+
+
+    for(
+      const cell
+      of selectedCells
+    ){
+
+
+      const before =
+        beads.getColor(
+          cell.x,
+          cell.y
         );
 
 
 
-      if(replaceButton){
+      if(
+        before !== newColor
+      ){
 
 
-        replaceButton.onclick =
-        ()=>{
-
-
-          if(
-            selectedCells.length === 0
-          )
-            return;
-
-
-
-          const newColor =
-            Number(
-              replaceSelect.value
-            );
+        beads.set(
+          cell.x,
+          cell.y,
+          newColor
+        );
 
 
 
-          const actions:
-            HistoryAction[] =
-            [];
+        actions.push({
 
+          x:
+            cell.x,
 
+          y:
+            cell.y,
 
-          for(
-            const cell
-            of selectedCells
-          ){
+          before,
 
+          after:
+            newColor,
 
-            const before =
-              beads.getColor(
-                cell.x,
-                cell.y
-              );
-
-
-
-            if(
-              before !== newColor
-            ){
-
-
-              beads.set(
-                cell.x,
-                cell.y,
-                newColor
-              );
-
-
-
-              actions.push({
-
-                x:
-                  cell.x,
-
-                y:
-                  cell.y,
-
-                before,
-
-                after:
-                  newColor,
-
-              });
-
-
-            }
-
-
-          }
-
-
-
-          if(
-            actions.length > 0
-          ){
-
-
-            history.push(
-              actions
-            );
-
-
-          }
-
-
-
-          updateColorList();
-
-
-
-          clearHighlight();
-
-
-
-        };
+        });
 
 
       }
+
+
+    }
+
+
+
+    if(
+      actions.length > 0
+    ){
+
+
+      history.push(
+        actions
+      );
+
+
+    }
+
+
+
+    // 색상 목록 갱신
+
+    updateColorList();
+
+
+
+    // 교체된 색을 현재 선택색으로 변경
+
+    selectedColor =
+      newColor;
+
+
+
+    // 기존 하이라이트 제거
+
+    clearHighlight();
+
+
+
+    // 새 색 기준으로 다시 하이라이트
+
+    const cells =
+      beads.getCells();
+
+
+
+    highlight.showOutline(
+      newColor,
+      cells
+    );
+
+
+    dim.showExcept(
+      newColor,
+      cells
+    );
+
+
+
+    update();
+
+
+  };
+
+
+}
 
 
 

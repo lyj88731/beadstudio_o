@@ -3,12 +3,6 @@ function Topbar() {
     <header className="topbar">
       <div className="topbar-title">BeadStudio</div>
 
-      <div className="topbar-menu">
-        <span>File</span>
-        <span>Edit</span>
-        <span>View</span>
-        <span>Help</span>
-      </div>
     </header>
   );
 }

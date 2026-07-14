@@ -96,13 +96,6 @@ className="palette-list"
         <div>
 
 
-          <div>
-            Selected :
-
-            <span id="selected-color">
-              None
-            </span>
-          </div>
 
 
 

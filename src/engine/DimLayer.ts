@@ -3,12 +3,18 @@ import { Container, Graphics } from "pixi.js";
 
 export default class DimLayer {
 
+
+  public enabled = true;
+
+
   container =
     new Container();
 
 
+
   private graphics =
     new Graphics();
+
 
 
   cellSize = 20;
@@ -25,19 +31,35 @@ export default class DimLayer {
 
 
 
+
   showExcept(
     color:number,
     cells:Map<number,number>
   ){
+
+
+    if(!this.enabled){
+
+      this.graphics.clear();
+
+      return;
+
+    }
+
+
 
     this.graphics.clear();
 
 
 
     this.graphics.setFillStyle({
+
       color:0x000000,
+
       alpha:0.65,
+
     });
+
 
 
 
@@ -75,6 +97,7 @@ export default class DimLayer {
 
       );
 
+
     }
 
 
@@ -85,10 +108,12 @@ export default class DimLayer {
 
 
 
+
   clear(){
 
     this.graphics.clear();
 
   }
+
 
 }

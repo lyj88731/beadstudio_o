@@ -535,7 +535,13 @@ this.getTool =
 
 
 
-
+console.log(
+  "좌표",
+  x,
+  y,
+  this.cols,
+  this.rows
+);
 
     // 도안 영역 밖 차단
 
@@ -550,6 +556,11 @@ this.getTool =
 
     }
 
+console.log(
+  "Input paint",
+  x,
+  y
+);
 
 
     this.paint(

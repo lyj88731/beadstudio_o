@@ -4,6 +4,9 @@ import { Container, Graphics } from "pixi.js";
 export default class HighlightLayer {
 
 
+  public enabled = true;
+
+
   container =
     new Container();
 
@@ -28,10 +31,22 @@ export default class HighlightLayer {
 
 
 
+
   showOutline(
     color:number,
     cells:Map<number,number>
   ){
+
+
+    // 강조 OFF 상태
+    if(!this.enabled){
+
+      this.graphics.clear();
+
+      return;
+
+    }
+
 
 
     this.graphics.clear();
@@ -76,11 +91,13 @@ export default class HighlightLayer {
         );
 
 
+
       selected.add(
         `${x},${y}`
       );
 
     }
+
 
 
 
@@ -94,7 +111,8 @@ export default class HighlightLayer {
         x,
         y
       ] =
-        pos.split(",")
+        pos
+        .split(",")
         .map(Number);
 
 
@@ -124,12 +142,14 @@ export default class HighlightLayer {
 
 
 
+
       const px =
         x * this.cellSize;
 
 
       const py =
         y * this.cellSize;
+
 
 
 
@@ -204,6 +224,7 @@ export default class HighlightLayer {
 
 
   }
+
 
 
 

@@ -4,6 +4,26 @@ function Toolbar() {
   return (
 
     <aside className="toolbar">
+{/* CURRENT COLOR */}
+
+<div className="selected-color-box">
+
+  <div
+    id="selected-color-preview"
+    className="selected-color-preview"
+  ></div>
+
+
+  <div
+    id="selected-color"
+    className="selected-color-name"
+  >
+    No Color
+  </div>
+
+</div>
+
+
 
 
       {/* TOOL BUTTONS */}
@@ -180,6 +200,38 @@ function Toolbar() {
 
             </label>
 
+<label className="check-row">
+
+  <input
+    id="show-highlight"
+    type="checkbox"
+    defaultChecked
+  />
+
+  <span>
+    Color Highlight
+  </span>
+
+</label>
+
+
+<label className="check-row">
+
+  <input
+    id="show-grid"
+    type="checkbox"
+    defaultChecked
+  />
+
+  <span>
+    Grid
+  </span>
+
+</label>
+
+
+
+
 
 
             <label className="check-row">
@@ -247,6 +299,12 @@ function Toolbar() {
           <h3>
             COLORS
           </h3>
+
+          <div className="replace-selected-color">
+
+
+
+</div>
 
 
 

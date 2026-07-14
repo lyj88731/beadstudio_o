@@ -21,55 +21,62 @@ export default function createGrid(
 
 
 
-const drawLine = (
-  x1:number,
-  y1:number,
-  x2:number,
-  y2:number,
-  strong5Line:boolean,
-  strong10Line:boolean
-)=>{
+  const drawLine = (
+    x1:number,
+    y1:number,
+    x2:number,
+    y2:number,
+    strong5Line:boolean,
+    strong10Line:boolean
+  )=>{
 
 
-  const line =
-    new Graphics();
+    const line =
+      new Graphics();
 
 
-line.setStrokeStyle({
-  width:
-    strong10Line ? 3 :
-    strong5Line ? 2 :
-    1,
+    line.setStrokeStyle({
 
-  color:
-    strong10Line ? 0x555555 :
-    strong5Line ? 0x888888 :
-    0xcfcfcf,
-
-  alpha:1
-});
+      width:
+        strong10Line ? 3 :
+        strong5Line ? 2 :
+        1,
 
 
-  line.moveTo(
-    x1,
-    y1
-  );
+      color:
+        strong10Line ? 0x555555 :
+        strong5Line ? 0x888888 :
+        0xcfcfcf,
 
 
-  line.lineTo(
-    x2,
-    y2
-  );
+      alpha:1
+
+    });
 
 
-  line.stroke();
+
+    line.moveTo(
+      x1,
+      y1
+    );
 
 
-  grid.addChild(
-    line
-  );
+    line.lineTo(
+      x2,
+      y2
+    );
 
-};
+
+    line.stroke();
+
+
+
+    grid.addChild(
+      line
+    );
+
+  };
+
 
 
 
@@ -82,19 +89,24 @@ line.setStrokeStyle({
   ){
 
     drawLine(
-  x * cellSize,
-  0,
-  x * cellSize,
-  height,
 
-  strong5 &&
-  x % 5 === 0,
+      x * cellSize,
+      0,
 
-  strong10 &&
-  x % 10 === 0
-);
+      x * cellSize,
+      height,
+
+      strong5 &&
+      x % 5 === 0,
+
+
+      strong10 &&
+      x % 10 === 0
+
+    );
 
   }
+
 
 
 
@@ -107,26 +119,24 @@ line.setStrokeStyle({
   ){
 
     drawLine(
-  0,
-  y * cellSize,
-  width,
-  y * cellSize,
 
-  strong5 &&
-  y % 5 === 0,
+      0,
+      y * cellSize,
 
-  strong10 &&
-  y % 10 === 0
-);
+      width,
+      y * cellSize,
+
+
+      strong5 &&
+      y % 5 === 0,
+
+
+      strong10 &&
+      y % 10 === 0
+
+    );
 
   }
-
-console.log(
-  cols,
-  rows,
-  width,
-  height
-);
 
 
 

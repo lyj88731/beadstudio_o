@@ -69,27 +69,31 @@ export default class BeadLayer {
 
 
 
-
-  set(
-    x:number,
-    y:number,
-    color = 0x000000
-  ){
-
-
-    const key =
-      y * 100000 + x;
+set(
+  x:number,
+  y:number,
+  color = 0x000000,
+  redraw = true
+){
 
 
-    this.cells.set(
-      key,
-      color
-    );
+  const key =
+    y * 100000 + x;
 
+
+  this.cells.set(
+    key,
+    color
+  );
+
+
+  if(redraw){
 
     this.redraw();
 
   }
+
+}
 
 
 
@@ -297,7 +301,7 @@ remove(
 
     return (
       this.cells.get(key)
-      ?? 0xffffff
+      ?? -1
     );
 
   }
@@ -305,13 +309,6 @@ remove(
 
 
 
-
-  // 외부에서 토글 변경 후 호출
-  refresh(){
-
-    this.redraw();
-
-  }
 
 
 
@@ -346,21 +343,25 @@ remove(
 
       // 비즈
 
-      this.graphics
-        .rect(
+if(color !== -1){
 
-          x*this.cellSize + 1,
+  this.graphics
+    .rect(
 
-          y*this.cellSize + 1,
+      x * this.cellSize,
 
-          this.cellSize - 2,
+      y * this.cellSize,
 
-          this.cellSize - 2
+      this.cellSize,
 
-        )
-        .fill(
-          color
-        );
+      this.cellSize
+
+    )
+    .fill(
+      color
+    );
+
+}
 
 
 
@@ -450,6 +451,12 @@ remove(
 
 
   }
+
+public refresh(){
+
+  this.redraw();
+
+}
 
 
 }
