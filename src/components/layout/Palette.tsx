@@ -22,18 +22,18 @@ function Palette() {
 
 
 
-<div
- className="palette-body"
- style={{
-   flex:1,
-   display:"flex",
-   flexDirection:"column",
-   padding:"10px",
-   overflowY:"auto",
-   overflowX:"hidden",
-   minHeight:0,
- }}
->
+      <div
+        className="palette-body"
+        style={{
+          flex:1,
+          display:"flex",
+          flexDirection:"column",
+          padding:"10px",
+          overflowY:"auto",
+          overflowX:"hidden",
+          minHeight:0,
+        }}
+      >
 
 
 
@@ -67,17 +67,17 @@ function Palette() {
 
 
 
-<div
- id="color-list"
-className="palette-list"
- style={{
-   height:"400px",
-   flexShrink:0,
-   overflowY:"auto",
-   border:"1px solid #aaa",
-   padding:"10px",
- }}
->
+        <div
+          id="color-list"
+          className="palette-list"
+          style={{
+            height:"400px",
+            flexShrink:0,
+            overflowY:"auto",
+            border:"1px solid #aaa",
+            padding:"10px",
+          }}
+        >
           No data
         </div>
 
@@ -96,9 +96,6 @@ className="palette-list"
         <div>
 
 
-
-
-
           <div
             style={{
               display:"flex",
@@ -114,7 +111,6 @@ className="palette-list"
             />
 
 
-
             <div
               id="replace-preview"
               style={{
@@ -123,7 +119,6 @@ className="palette-list"
                 border:"1px solid #777",
               }}
             />
-
 
           </div>
 

@@ -7,32 +7,53 @@ export interface PixelData {
 
 export default class ImageConverter {
 
+
   convert(
-  image: HTMLImageElement,
-  targetWidth: number,
-  targetHeight: number
+    image: HTMLImageElement,
+    targetWidth: number,
+    targetHeight: number
   ): PixelData[] {
-
-
-
-
 
 
     const canvas =
       document.createElement("canvas");
 
 
-    canvas.width = targetWidth;
-    canvas.height = targetHeight;
+    canvas.width =
+      targetWidth;
+
+
+    canvas.height =
+      targetHeight;
+
 
 
     const ctx =
-      canvas.getContext("2d");
+      canvas.getContext(
+        "2d",
+        {
+          willReadFrequently:true
+        }
+      );
 
 
-    if (!ctx) return [];
+    if(!ctx)
+      return [];
 
-ctx.imageSmoothingEnabled = false;
+
+
+    ctx.imageSmoothingEnabled = false;
+
+
+
+    ctx.clearRect(
+      0,
+      0,
+      targetWidth,
+      targetHeight
+    );
+
+
 
     ctx.drawImage(
       image,
@@ -41,6 +62,7 @@ ctx.imageSmoothingEnabled = false;
       targetWidth,
       targetHeight
     );
+
 
 
 
@@ -54,54 +76,93 @@ ctx.imageSmoothingEnabled = false;
 
 
 
-    const pixels: PixelData[] = [];
+    const pixels:
+      PixelData[] =
+      new Array(
+        targetWidth *
+        targetHeight
+      );
 
 
 
-    for (
+    let count = 0;
+
+
+
+    for(
       let y = 0;
       y < targetHeight;
       y++
-    ) {
+    ){
 
-      for (
+
+      let index =
+        y *
+        targetWidth *
+        4;
+
+
+
+      for(
         let x = 0;
         x < targetWidth;
         x++
-      ) {
+      ){
 
 
-        const index =
-          (y * targetWidth + x) * 4;
+        const r =
+          data[index];
 
 
-        const r = data[index];
-        const g = data[index + 1];
-        const b = data[index + 2];
-        const a = data[index + 3];
+        const g =
+          data[index + 1];
 
 
-        if (a < 20) continue;
+        const b =
+          data[index + 2];
+
+
+        const a =
+          data[index + 3];
 
 
 
-        pixels.push({
+        if(a >= 20){
 
-          x,
-          y,
 
-          color:
-            (r << 16) |
-            (g << 8) |
-            b
+          pixels[count++] = {
 
-        });
+            x,
+
+            y,
+
+            color:
+              (r << 16) |
+              (g << 8) |
+              b
+
+          };
+
+
+        }
+
+
+        index += 4;
+
 
       }
 
     }
 
 
+
+    pixels.length =
+      count;
+
+
+
     return pixels;
+
   }
+
 }

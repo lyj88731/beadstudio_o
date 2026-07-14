@@ -378,6 +378,68 @@ let showHighlight = true;
       let selectedColor:
         number | null = null;
 
+const applySelectedColor =
+(color:number)=>{
+
+
+  selectedColor =
+    color;
+
+
+  const hex =
+    "#" +
+    selectedColor
+      .toString(16)
+      .padStart(6,"0");
+
+
+
+  const mard =
+    MardColors.find(
+      c =>
+      c.color === selectedColor
+    );
+
+
+
+  const name =
+    mard
+    ? mard.name
+    : hex;
+
+
+
+  const preview =
+    document.getElementById(
+      "selected-color-preview"
+    );
+
+
+  if(preview){
+
+    preview.style.background =
+      hex;
+
+  }
+
+
+
+  const nameElement =
+    document.getElementById(
+      "selected-color-name"
+    );
+
+
+  if(nameElement){
+
+    nameElement.textContent =
+      name;
+
+  }
+
+
+};
+        
 
 
       let selectedCells:
@@ -470,12 +532,14 @@ let showHighlight = true;
       // Used Colors
       // =====================
 
+let selectedRow:
+  HTMLDivElement | null = null;
 
+      
       const updateColorList =
       ()=>{
 
-let selectedRow:
-  HTMLDivElement | null = null;
+
 
         const colors =
           beads.getColors();
@@ -604,17 +668,12 @@ let selectedRow:
 
     clearHighlight();
 
-    selectedColor = null;
+    selectedColor =
+      null;
 
 
-    if(selectedRow){
-
-      selectedRow.style.background =
-        "";
-
-      selectedRow = null;
-
-    }
+    row.style.background =
+      "";
 
 
     return;
@@ -634,8 +693,6 @@ let selectedRow:
 
 
 
-  // 현재 선택 표시
-
   row.style.background =
     "#444";
 
@@ -649,86 +706,127 @@ let selectedRow:
 
 
 
+  // =====================
+  // 선택색 변경 + UI 갱신
+  // =====================
+
   selectedColor =
     color;
 
 
 
-            selectedCells =
-              [];
+  const hex =
+    "#" +
+    color
+      .toString(16)
+      .padStart(6,"0");
 
 
 
-            for(
-              const [key,value]
-              of beads.getCells()
-            ){
-
-
-              if(value === color){
-
-
-                selectedCells.push({
-
-                  x:
-                    key % 100000,
-
-
-                  y:
-                    Math.floor(
-                      key / 100000
-                    )
-
-                });
-
-
-              }
-
-            }
+  const mard =
+    MardColors.find(
+      c =>
+      c.color === color
+    );
 
 
 
-            // 나머지 어둡게
-
-            dim.showExcept(
-              color,
-              beads.getCells()
-            );
+  const name =
+    mard
+    ? mard.name
+    : hex;
 
 
 
-            // 선택 영역 외곽
-
-            highlight.showOutline(
-              color,
-              beads.getCells()
-            );
+  const preview =
+    document.getElementById(
+      "selected-color-preview"
+    );
 
 
+  if(preview){
 
-            const selected =
-              document.getElementById(
-                "selected-color"
-              );
+    preview.style.background =
+      hex;
 
-
-
-            if(selected){
+  }
 
 
-              selected.textContent =
-                mard
-                  ? mard.name
-                  : "#" +
-                    color
-                      .toString(16)
-                      .padStart(6,"0");
+
+  const nameElement =
+    document.getElementById(
+      "selected-color-name"
+    );
 
 
-            }
+  if(nameElement){
+
+    nameElement.textContent =
+      name;
+
+  }
 
 
-          };
+
+
+  // =====================
+  // 선택 셀 저장
+  // =====================
+
+  selectedCells =
+    [];
+
+
+
+  for(
+    const [key,value]
+    of beads.getCells()
+  ){
+
+
+    if(value === color){
+
+
+      selectedCells.push({
+
+        x:
+          key % 100000,
+
+
+        y:
+          Math.floor(
+            key / 100000
+          )
+
+      });
+
+
+    }
+
+  }
+
+
+
+
+  // =====================
+  // 하이라이트
+  // =====================
+
+
+  dim.showExcept(
+    color,
+    beads.getCells()
+  );
+
+
+  highlight.showOutline(
+    color,
+    beads.getCells()
+  );
+
+
+  
+};
 
 
 
@@ -995,8 +1093,9 @@ if(
 
 
   // 선택 색 저장
-  selectedColor =
-    color;
+applySelectedColor(
+  color
+);
 
 
 
@@ -1004,19 +1103,19 @@ if(
 
 
 
-  const hex =
-    "#" +
-    selectedColor
-      .toString(16)
-      .padStart(6,"0");
+const hex =
+  "#" +
+  color
+    .toString(16)
+    .padStart(6,"0");
 
 
 
-  const mard =
-    MardColors.find(
-      c =>
-      c.color === selectedColor
-    );
+const mard =
+  MardColors.find(
+    c =>
+    c.color === color
+  );
 
 
 
